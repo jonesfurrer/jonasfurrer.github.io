@@ -8,24 +8,66 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Squada+One&display=swap" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script>
+            var TxtType = function(el, toRotate, period) {
+                this.toRotate = toRotate;
+                this.el = el;
+                this.loopNum = 0;
+                this.period = parseInt(period, 10) || 2000;
+                this.txt = '';
+                this.tick();
+                this.isDeleting = false;
+            };
+
+            TxtType.prototype.tick = function() {
+                var i = this.loopNum % this.toRotate.length;
+                var fullTxt = this.toRotate[i];
+
+                if (this.isDeleting) {
+                    this.txt = fullTxt.substring(0, this.txt.length - 1);
+                } else {
+                    this.txt = fullTxt.substring(0, this.txt.length + 1);
+                }
+
+                this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
+
+                var that = this;
+                var delta = 200 - Math.random() * 100;
+
+                if (this.isDeleting) { delta /= 2; }
+
+                if (!this.isDeleting && this.txt === fullTxt) {
+                    delta = this.period;
+                    this.isDeleting = true;
+                } else if (this.isDeleting && this.txt === '') {
+                    this.isDeleting = false;
+                    this.loopNum++;
+                    delta = 500;
+                }
+
+                setTimeout(function() {
+                    that.tick();
+                }, delta);
+            };
+
+            window.onload = function() {
+                var elements = document.getElementsByClassName('typewrite');
+                for (var i=0; i<elements.length; i++) {
+                    var toRotate = elements[i].getAttribute('data-type');
+                    var period = elements[i].getAttribute('data-period');
+                    if (toRotate) {
+                        new TxtType(elements[i], JSON.parse(toRotate), period);
+                    }
+                }
+                // INJECT CSS
+                var css = document.createElement("style");
+                css.type = "text/css";
+                css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
+                document.body.appendChild(css);
+            };
+        </script>
     </head>
     <body>
-        <header>
-            <div class="header-container">
-                <img id="navbar-logo" src="../assets/logo.png" alt="Logo">
-                <span id="navbar-title">
-                    <span>Personal Website</span>
-                </span>
-                <span id="navbar-spacer"></span>
-                <nav id="navbar-links">
-                    <a href="/">About</a>
-                    <a href="/photography">Photography</a>
-                    <a href="/travelling">Travelling</a>
-                    <a href="/blog">Blog</a>
-                    <a href="/contact">Contact</a>
-                </nav>
-            </div>
-        </header>
         <main>
             <section class="hero-section">
                 <div class="container-fluid">
@@ -33,10 +75,55 @@
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                             <div class="hero-left">
                                 <h2>Hello, I'm Jonas Furrer</h2>
-                                <div class="title">
-                                    Software Engineer
+                                <div class="typewrite" data-period="2000" data-type='["I am a software engineer", "I am a photographer"]'>
                                 </div>
+                                <span class="wrap"></span>
                                 <a href="/">Check out my blog</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="hero-right">
+                                <img id="portrait-image" src="../assets/portrait_transparent.png" alt="Portrait">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="about-section">
+
+            </section>
+            <section class="cv-section">
+
+            </section>
+            <section class="gallery-section">
+
+            </section>
+            <section class="stats-section">
+
+            </section>
+            <section class="contact-section">
+
+            </section>
+            <div class="content-container">
+                {{ content }}
+            </div>
+            <footer>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 sm-text-center sm-margin-five-bottom xs-margin-nine-bottom display-table">
+                            <div class="display-table-cell-vertical-middle">
+                                <img id="footer-image" src="../assets/logo.png" alt="Portrait">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-5 col-sm-12 col-xs-12 sm-margin-three-bottom text-center xs-text-center display-table">
+                            <div class="display-table-cell-vertical-middle">
+                                <span id="footer-copyright">
+                                    <span>© 2024 Jonas Furrer</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 text-right sm-text-center display-table">
+                            <div class="social icon-extra-small display-table-cell-vertical-middle">
                                 <div class="some-icons">
                                     <ul class="display-inline">
                                         <li class="display-inline">
@@ -55,17 +142,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <div class="hero-right">
-                                <img id="portrait-image" src="../assets/portrait_transparent.png" alt="Portrait">
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </section>
-            <div class="content-container">
-                {{ content }}
-            </div>
+            </footer>
         </main>
     </body>
 </html>

@@ -24,3 +24,10 @@
     max-height:100%;
     max-width:100%;
 }
+
+.hero-left {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
