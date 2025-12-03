@@ -11,8 +11,13 @@
             rel="stylesheet"
     >
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/base.css' | relative_url }}">
+
+    <!-- Page-specific CSS -->
+    {% if page.slug %}
+    <link rel="stylesheet" href="{{ '/assets/css/' | append: page.slug | append: '.css' | relative_url }}">
+    {% endif %}
 </head>
 
 <body class="{{ page.slug }}">
@@ -28,7 +33,6 @@
                 <li class="nav-item"><a class="nav-link" href="/photography/">Photography</a></li>
                 <li class="nav-item"><a class="nav-link" href="/software-engineering/">Engineering</a></li>
                 <li class="nav-item"><a class="nav-link" href="/music/">Music</a></li>
-                <li class="nav-item"><a class="nav-link" href="/test/">Test</a></li>
                 <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
             </ul>
         </div>
