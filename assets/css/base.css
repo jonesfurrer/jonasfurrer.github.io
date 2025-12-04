@@ -13,6 +13,17 @@ body {
     min-height: 100vh;
 }
 
+.dot-grid {
+    --gap: 40px;
+    --dot: rgba(255,255,255,0.3);
+    background-image:
+            radial-gradient(circle, var(--dot) 1px, transparent 2px),
+            radial-gradient(circle, var(--dot) 1px, transparent 2px);
+    background-size: var(--gap) var(--gap), var(--gap) var(--gap);
+    background-position: 0 0, calc(var(--gap)/2) calc(var(--gap)/2);
+    background-color: #0d0d0d;
+}
+
 /* Navbar */
 .navbar {
     background-color: #ffffff;
